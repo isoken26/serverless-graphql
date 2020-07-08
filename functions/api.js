@@ -1,8 +1,7 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const expressGraphQL = require("express-graphql");
+const {graphqlHTTP} = require("express-graphql");
 const serverless = require("serverless-http");
-const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require("graphql");
+const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt } = require("graphql");
 
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -12,16 +11,20 @@ const schema = new GraphQLSchema({
         type: GraphQLString,
         resolve: () => "Hello World",
       },
+      hoge: {
+        type: GraphQLInt,
+        resolve: () => 100,
+      }
     }),
   }),
 });
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(
   "/",
-  expressGraphQL({
+  graphqlHTTP({
     schema: schema,
     graphiql: true,
   })
