@@ -22,6 +22,11 @@ const schema = new GraphQLSchema({
 const app = express();
 
 app.use(express.json());
+app.use('/.netlify/functions/api',
+ graphqlHTTP({
+  schema: schema,
+  graphiql: true,
+}))
 app.use(
   "/",
   graphqlHTTP({
